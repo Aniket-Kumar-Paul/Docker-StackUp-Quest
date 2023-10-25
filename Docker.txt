@@ -1,0 +1,39 @@
+# Docker - 
+> Benefits : Consistency, Isolation, Portability, Microservices
+> Docker Image VS Docker Container :
+Docker image is the blueprint (Dockerfile and its associated files), and the Docker container is the actual running instance of that image, where your application runs. You can have multiple containers based on the same image, just like you can have multiple servings of the same dish made from the same recipe.
+
+
+
+## Eg. Dockerfile - script that Docker uses to create an image
+( designating base image, env. vars details, files to be copied, commands to execute )
+
+FROM node:18-alpine 		:- specifies the base image to be used and in this instance, the image we are using is an Alpine-based image of Node.js version 18
+
+WORKDIR /app        		:- sets the working directory inside the Docker container to /app where any subsequent command will be executed from this directory
+
+COPY . . 	    		:- copies the current directory contents on the host machine to the current directory set inside the container (/app)
+
+RUN npm install			:- installs all the libraries and dependencies defined from the package.json file
+
+CMD [“node”, “src/index.js”] 	:- runs the index.js file located in the src directory
+
+EXPOSE 3000 			:- informs Docker that the container listens on port 3000 at runtime
+
+
+
+## Building the docker image 
+	> docker build -t <my_docker_image> . (t-tag, . => Dockerfile is in current directory)
+## List all docker image
+	> docker images
+## Run docker container
+	> docker run -dp 127.0.0.1:3000:3000 <my_docker_image> 
+	(-d : detach (run container in background)
+	 -p : port mapping (host port:container port))
+## To view docker containers
+	> docker ps
+## To stop & remove a docker container
+	> docker stop <container_id>
+	> docker rm <container_id>
+
+
