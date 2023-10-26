@@ -21,7 +21,8 @@ EXPOSE 3000 			:- informs Docker that the container listens on port 3000 at runt
 
 
 
----> NOTE: RUN is used during the image build process to perform setup and configuration tasks, while CMD is used to specify the default command to run when a container is started from the image
+---> NOTE: RUN is used during the image build process to perform setup and configuration tasks, 
+	   while CMD is used to specify the default command to run when a container is started from the image
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 
@@ -83,5 +84,8 @@ networks:
 	> docker compose up --detach
 ## To stop application
 	> docker compose down
+## To execute commands inside a container (Eg. To use mongodb shell in mongodb container)
+	> docker exec -it <containerID> mongosh -u "root" -p "example" (it-interactive cmd in container, u-username, p-pwd)
+	> Inside shell, > db.users.find().pretty() (to display all users)
 
 
