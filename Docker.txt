@@ -3,10 +3,9 @@
 > Docker Image VS Docker Container :
 Docker image is the blueprint (Dockerfile and its associated files), and the Docker container is the actual running instance of that image, where your application runs. You can have multiple containers based on the same image, just like you can have multiple servings of the same dish made from the same recipe.
 
-
-
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------
 ## Eg. Dockerfile - script that Docker uses to create an image
-( designating base image, env. vars details, files to be copied, commands to execute )
+( designating base image, workdir, env. vars details, files to be copied, commands to execute )
 
 FROM node:18-alpine 		:- specifies the base image to be used and in this instance, the image we are using is an Alpine-based image of Node.js version 18
 
@@ -22,6 +21,10 @@ EXPOSE 3000 			:- informs Docker that the container listens on port 3000 at runt
 
 
 
+---> NOTE: RUN is used during the image build process to perform setup and configuration tasks, while CMD is used to specify the default command to run when a container is started from the image
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
 ## Building the docker image 
 	> docker build -t <my_docker_image> . (t-tag, . => Dockerfile is in current directory)
 ## List all docker image
@@ -35,5 +38,50 @@ EXPOSE 3000 			:- informs Docker that the container listens on port 3000 at runt
 ## To stop & remove a docker container
 	> docker stop <container_id>
 	> docker rm <container_id>
+
+
+---------------------------------------------------------------------------------------------------------------------
+# Docker Compose - Docker Compose is a tool that allows developers to define and share multi-container applications. 
+|- Benefits
+	|- Simplified config (uses yaml file)
+	|- Efficien dev. workflow
+	|- Dependency mgt.
+
+Key Syntax of a docker-compose.yml :-
+1. version - Specifies the version of the Docker Compose file
+2. services - Defines each service (Docker Container) that should be run in your application
+3. build - Provides build instructions if you’re not using a pre-existing image from Docker Hub
+4. image - Specifies the Docker image to use for a service (Docker Container)
+5. ports - Maps ports from the host to the service
+6. volumes - Defines any storage volumes you would like to attach to the service
+7. depends_on - Define the dependencies between services in your application
+8. networks - Specifies which networks the service is connected to
+----------------------------
+Eg. docker-compose.yml
+version: '3'
+
+services:
+ web:
+  image: nginx:latest
+  ports:
+   - "8080:80"
+  depends_on:
+   - redis
+  networks:
+   - webnet
+
+ redis:
+  image: redis:alpine
+  networks:
+   - webnet
+
+networks:
+ webnet:
+----------------------------
+
+## To run application 
+	> docker compose up --detach
+## To stop application
+	> docker compose down
 
 
